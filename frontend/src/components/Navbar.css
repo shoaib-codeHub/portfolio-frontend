@@ -1,0 +1,229 @@
+/* ===== NAVBAR ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===== LINKS ===== */
+.links {
+  display: flex;
+  gap: 25px;
+}
+
+/* ===== LINK STYLE ===== */
+.links a {
+  text-decoration: none;
+  color: #5F9598;
+  font-size: 18px;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Hover */
+.links a:hover {
+  color: #1D546D;
+}
+
+/* Underline animation */
+.links a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #1D546D;
+  transition: width 0.3s ease;
+}
+
+.links a:hover::after {
+  width: 100%;
+}
+
+/* ===== USER SECTION ===== */
+.user-section {
+  position: relative;
+}
+
+/* ===== USER INFO (avatar + name) ===== */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.user-info:hover {
+  background: #f1f5f9;
+}
+
+/* USERNAME */
+.username {
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== LOGIN BUTTON ===== */
+.login-btn {
+  background: #2575fc;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: #1d4ed8;
+}
+
+/* ===== AVATAR ===== */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #5F9598, #2575fc);
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(37,117,252,0.3);
+}
+
+/* ===== DROPDOWN ===== */
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 55px;
+
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px;
+  min-width: 200px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  animation: fadeIn 0.2s ease;
+  z-index: 100;
+}
+
+/* EMAIL */
+.user-email {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 6px;
+  word-break: break-all;
+}
+
+/* DROPDOWN LINKS */
+.dropdown a {
+  text-decoration: none;
+  color: #334155;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.dropdown a:hover {
+  background: #f1f5f9;
+}
+
+/* LOGOUT BUTTON */
+.dropdown button {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.dropdown button:hover {
+  background: #dc2626;
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px 20px;
+  }
+
+  .links {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .links a {
+    font-size: 16px;
+  }
+
+  .user-section {
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .user-info {
+    width: fit-content;
+  }
+
+  .login-btn {
+    width: fit-content;
+  }
+
+  .dropdown {
+    right: auto;
+    left: 0;
+    top: 50px;
+  }
+}

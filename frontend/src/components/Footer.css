@@ -1,0 +1,220 @@
+/* ================= FOOTER ================= */
+
+.modern-footer {
+  margin-top: 120px;
+  background: linear-gradient(135deg, #5F9598, #2575fc);
+  color: #ffffff;
+
+  padding: 70px 20px 20px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ✨ animated glow */
+.modern-footer::before {
+  content: "";
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(255,255,255,0.25), transparent);
+  top: -120px;
+  left: -120px;
+  animation: floatGlow 8s ease-in-out infinite;
+}
+
+/* subtle top line glow */
+.modern-footer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, #ffffff, transparent);
+  opacity: 0.6;
+}
+
+/* GRID */
+.footer-top {
+  width: 85%;
+  max-width: 1200px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+}
+
+/* ================= BRAND ================= */
+
+.footer-brand h2 {
+  font-size: 1.9rem;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.footer-brand p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+  max-width: 400px;
+}
+
+/* ================= LINKS ================= */
+
+.footer-links h3 {
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+/* LINK */
+.footer-links a {
+  display: inline-block;
+  text-decoration: none;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.95rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* underline animation */
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+
+  width: 100%;
+  height: 2px;
+  background: #ffffff;
+
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+.footer-links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+/* ================= BOTTOM ================= */
+
+.footer-bottom {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-bottom p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ================= SOCIAL ================= */
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+
+  text-decoration: none;
+  font-size: 0.9rem;
+
+  transition: all 0.3s ease;
+}
+
+/* NEW: Constrain the image size so it fits inside the 40px circle */
+.social-link img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  background: #ffffff;
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* IMPORTANT NOTE ON HOVER COLORS:
+  Since you are using <img> tags instead of SVGs or font-icons, 
+  `color: #2575fc;` won't change the color of your image on hover. 
+  If your imported images are solid white, they will disappear when the background turns white on hover.
+  
+  If your icons are white, you can use a CSS filter to invert their color on hover:
+*/
+.social-link:hover img {
+  filter: invert(41%) sepia(87%) saturate(2258%) hue-rotate(209deg) brightness(101%) contrast(97%); /* Approximates #2575fc */
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes floatGlow {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(40px, 40px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-top {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-brand p {
+    margin: auto;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+}
