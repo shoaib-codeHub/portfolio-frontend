@@ -5,12 +5,13 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
   const menuRef = useRef(null);
 
-  // ✅ Decode token function
+  // ✅ Decode token
   const decodeToken = () => {
     const token = localStorage.getItem("token");
 
@@ -18,7 +19,6 @@ const Navbar = () => {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
 
-        // accept username OR email
         if (payload?.username || payload?.email) {
           setUser(payload);
         } else {
@@ -32,33 +32,27 @@ const Navbar = () => {
     }
   };
 
-  // ✅ Run on mount + listen for changes
-useEffect(() => {
-  decodeToken();
+  // ✅ Listen auth change
+  useEffect(() => {
+    decodeToken();
 
-  const handleAuthChange = () => decodeToken();
+    const handleAuthChange = () => decodeToken();
 
-  // 🔥 listen custom event
-  window.addEventListener("authChange", handleAuthChange);
+    window.addEventListener("authChange", handleAuthChange);
+    window.addEventListener("storage", handleAuthChange);
 
-  // optional: still listen storage (multi-tab support)
-  window.addEventListener("storage", handleAuthChange);
+    return () => {
+      window.removeEventListener("authChange", handleAuthChange);
+      window.removeEventListener("storage", handleAuthChange);
+    };
+  }, []);
 
-  return () => {
-    window.removeEventListener("authChange", handleAuthChange);
-    window.removeEventListener("storage", handleAuthChange);
+  // ✅ Logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.dispatchEvent(new Event("authChange"));
+    navigate("/login");
   };
-}, []);
-
-  // ✅ Logout (FIXED)
-const handleLogout = () => {
-  localStorage.removeItem("token");
-
-  // 🔥 trigger update
-  window.dispatchEvent(new Event("authChange"));
-
-  navigate("/login");
-};
 
   // ✅ Avatar initial
   const getInitial = () => {
@@ -67,7 +61,7 @@ const handleLogout = () => {
     return "?";
   };
 
-  // ✅ Username display
+  // ✅ Username
   const getUsername = () => {
     if (user?.username) return user.username;
     if (user?.email) return user.email.split("@")[0];
@@ -91,50 +85,72 @@ const handleLogout = () => {
     <nav className="navbar">
       <Logo />
 
-      <div className="links">
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/projects">Projects</NavLink>
-        <NavLink to="/about">About</NavLink>
-        <NavLink to="/contact">Contact</NavLink>
+      {/* 🍔 Hamburger */}
+      <div
+        className={`hamburger ${menuOpen ? "active" : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        ☰
       </div>
 
-      <div className="user-section" ref={menuRef}>
-        {user ? (
-          <div className="user-menu">
-            {/* 👤 Avatar + Name */}
-            <div
-              className="user-info"
-              onClick={() => setOpen(!open)}
-            >
-              <div className="avatar">{getInitial()}</div>
-              <span className="username">{getUsername()}</span>
-            </div>
+      {/* 🔗 LINKS (includes login/signup in mobile) */}
+      <div className={`links ${menuOpen ? "active" : ""}`}>
+        <NavLink to="/" onClick={() => setMenuOpen(false)}>Home</NavLink>
+        <NavLink to="/projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
+        <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>
+        <NavLink to="/contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
 
-            {/* 🔽 Dropdown */}
-            {open && (
-              <div className="dropdown">
-                <p className="user-email">
-                  {user.email || user.username}
-                </p>
-
-                {user.role === "admin" && (
-                  <NavLink to="/admin/dashboard">
-                    Admin Panel
-                  </NavLink>
-                )}
-
-                <button onClick={handleLogout}>
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <NavLink className="login-btn" to="/login">
+        {/* 👇 show login inside menu (mobile UX) */}
+        {!user && (
+          <NavLink
+            className="login-btn"
+            to="/login"
+            onClick={() => setMenuOpen(false)}
+          >
             Login / Signup
           </NavLink>
         )}
+
+        {/* 👇 if logged in, show logout in menu */}
+        {user && (
+          <button
+            className="logout-btn"
+            onClick={() => {
+              handleLogout();
+              setMenuOpen(false);
+            }}
+          >
+            Logout
+          </button>
+        )}
       </div>
+
+      {/* 👤 USER (only desktop) */}
+      {user && (
+        <div className="user-section" ref={menuRef}>
+          <div
+            className="user-info"
+            onClick={() => setOpen(!open)}
+          >
+            <div className="avatar">{getInitial()}</div>
+            <span className="username">{getUsername()}</span>
+          </div>
+
+          {open && (
+            <div className="dropdown">
+              <p className="user-email">
+                {user.email || user.username}
+              </p>
+
+              {user.role === "admin" && (
+                <NavLink to="/admin/dashboard">
+                  Admin Panel
+                </NavLink>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </nav>
   );
 };
