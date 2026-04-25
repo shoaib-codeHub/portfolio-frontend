@@ -93,14 +93,14 @@ const Navbar = () => {
         ☰
       </div>
 
-      {/* 🔗 LINKS (includes login/signup in mobile) */}
+      {/* 🔗 LINKS */}
       <div className={`links ${menuOpen ? "active" : ""}`}>
         <NavLink to="/" onClick={() => setMenuOpen(false)}>Home</NavLink>
         <NavLink to="/projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
         <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>
         <NavLink to="/contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
 
-        {/* 👇 show login inside menu (mobile UX) */}
+        {/* 👇 NOT LOGGED IN */}
         {!user && (
           <NavLink
             className="login-btn"
@@ -111,21 +111,27 @@ const Navbar = () => {
           </NavLink>
         )}
 
-        {/* 👇 if logged in, show logout in menu */}
+        {/* 👇 LOGGED IN (MOBILE USER ROW) */}
         {user && (
-          <button
-            className="logout-btn"
-            onClick={() => {
-              handleLogout();
-              setMenuOpen(false);
-            }}
-          >
-            Logout
-          </button>
+          <div className="mobile-user-row">
+            <span className="mobile-user-email">
+              {user.email || user.username}
+            </span>
+
+            <button
+              className="logout-btn"
+              onClick={() => {
+                handleLogout();
+                setMenuOpen(false);
+              }}
+            >
+              Logout
+            </button>
+          </div>
         )}
       </div>
 
-      {/* 👤 USER (only desktop) */}
+      {/* 👤 DESKTOP USER */}
       {user && (
         <div className="user-section" ref={menuRef}>
           <div
