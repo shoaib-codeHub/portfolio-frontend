@@ -3,20 +3,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 40px;
+
+  padding: 10px 20px;
+  height: 60px;
 
   background: #ffffff;
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+
   font-family: 'Poppins', sans-serif;
+  position: relative;
+  z-index: 1000;
+}
+
+/* ===== LOGO ===== */
+.logo img {
+  height: 35px;
+  object-fit: contain;
 }
 
 /* ===== LINKS ===== */
 .links {
   display: flex;
   gap: 25px;
+  align-items: center;
 }
 
-/* ===== LINK STYLE ===== */
+/* DEFAULT LINKS */
 .links a {
   text-decoration: none;
   color: #5F9598;
@@ -31,7 +43,7 @@
   color: #1D546D;
 }
 
-/* Underline animation */
+/* Underline */
 .links a::after {
   content: "";
   position: absolute;
@@ -47,12 +59,53 @@
   width: 100%;
 }
 
+/* ===== HAMBURGER ===== */
+.hamburger {
+  display: none;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+/* ===== LOGIN BUTTON (FIXED) ===== */
+.links .login-btn {
+  background: #2575fc;
+  color: #ffffff !important;   /* 🔥 FORCE WHITE TEXT */
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+/* remove underline + hover override */
+.links .login-btn::after {
+  display: none;
+}
+
+.links .login-btn:hover {
+  background: #1d4ed8;
+  color: #ffffff !important;
+}
+
+/* ===== LOGOUT BUTTON ===== */
+.logout-btn {
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
 /* ===== USER SECTION ===== */
 .user-section {
   position: relative;
 }
 
-/* ===== USER INFO (avatar + name) ===== */
 .user-info {
   display: flex;
   align-items: center;
@@ -67,36 +120,15 @@
   background: #f1f5f9;
 }
 
-/* USERNAME */
 .username {
   font-size: 14px;
-  font-weight: 500;
   color: #334155;
-  max-width: 120px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* ===== LOGIN BUTTON ===== */
-.login-btn {
-  background: #2575fc;
-  color: white;
-  padding: 8px 14px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 14px;
-  transition: 0.3s;
-}
-
-.login-btn:hover {
-  background: #1d4ed8;
 }
 
 /* ===== AVATAR ===== */
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
 
   background: linear-gradient(135deg, #5F9598, #2575fc);
@@ -108,7 +140,6 @@
 
   font-weight: bold;
   font-size: 14px;
-  cursor: pointer;
 
   transition: all 0.3s ease;
 }
@@ -136,45 +167,33 @@
   gap: 8px;
 
   animation: fadeIn 0.2s ease;
-  z-index: 100;
 }
 
-/* EMAIL */
-.user-email {
-  font-size: 0.8rem;
-  color: #64748b;
-  margin-bottom: 6px;
-  word-break: break-all;
-}
-
-/* DROPDOWN LINKS */
 .dropdown a {
   text-decoration: none;
   color: #334155;
   padding: 8px;
   border-radius: 6px;
   font-size: 14px;
-  transition: 0.2s;
 }
 
 .dropdown a:hover {
   background: #f1f5f9;
 }
 
-/* LOGOUT BUTTON */
-.dropdown button {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.2s;
+/* ===== HERO ===== */
+.hero {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-.dropdown button:hover {
-  background: #dc2626;
+.hero h1 {
+  margin-bottom: 20px;
+}
+
+.hero p {
+  margin-bottom: 30px;
 }
 
 /* ===== ANIMATION ===== */
@@ -191,39 +210,47 @@
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 15px 20px;
+
+  .hamburger {
+    display: block;
   }
 
+  /* hide user */
+  .user-section {
+    display: none;
+  }
+
+  /* mobile menu */
   .links {
-    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
     width: 100%;
-    gap: 12px;
-    margin-top: 10px;
+
+    background: #ffffff;
+
+    flex-direction: column;
+    align-items: center;
+
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.3s ease;
+  }
+
+  .links.active {
+    max-height: 400px;
+    padding: 20px 0;
   }
 
   .links a {
-    font-size: 16px;
+    padding: 10px 0;
+    font-size: 18px;
   }
 
-  .user-section {
+  .login-btn,
+  .logout-btn {
+    width: 80%;
+    text-align: center;
     margin-top: 10px;
-    width: 100%;
-  }
-
-  .user-info {
-    width: fit-content;
-  }
-
-  .login-btn {
-    width: fit-content;
-  }
-
-  .dropdown {
-    right: auto;
-    left: 0;
-    top: 50px;
   }
 }
