@@ -11,14 +11,13 @@ const Navbar = () => {
   const navigate = useNavigate();
   const menuRef = useRef(null);
 
-  // ✅ Decode token
+  // Decode token
   const decodeToken = () => {
     const token = localStorage.getItem("token");
 
     if (token && token.includes(".")) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
-
         if (payload?.username || payload?.email) {
           setUser(payload);
         } else {
@@ -32,7 +31,6 @@ const Navbar = () => {
     }
   };
 
-  // ✅ Listen auth change
   useEffect(() => {
     decodeToken();
 
@@ -47,28 +45,24 @@ const Navbar = () => {
     };
   }, []);
 
-  // ✅ Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.dispatchEvent(new Event("authChange"));
     navigate("/login");
   };
 
-  // ✅ Avatar initial
   const getInitial = () => {
     if (user?.username) return user.username.charAt(0).toUpperCase();
     if (user?.email) return user.email.charAt(0).toUpperCase();
     return "?";
   };
 
-  // ✅ Username
   const getUsername = () => {
     if (user?.username) return user.username;
     if (user?.email) return user.email.split("@")[0];
     return "User";
   };
 
-  // ✅ Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -85,7 +79,7 @@ const Navbar = () => {
     <nav className="navbar">
       <Logo />
 
-      {/* 🍔 Hamburger */}
+      {/* Hamburger */}
       <div
         className={`hamburger ${menuOpen ? "active" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -93,14 +87,14 @@ const Navbar = () => {
         ☰
       </div>
 
-      {/* 🔗 LINKS */}
+      {/* LINKS */}
       <div className={`links ${menuOpen ? "active" : ""}`}>
         <NavLink to="/" onClick={() => setMenuOpen(false)}>Home</NavLink>
         <NavLink to="/projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
         <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>
         <NavLink to="/contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
 
-        {/* 👇 NOT LOGGED IN */}
+        {/* NOT LOGGED IN */}
         {!user && (
           <NavLink
             className="login-btn"
@@ -111,9 +105,9 @@ const Navbar = () => {
           </NavLink>
         )}
 
-        {/* 👇 LOGGED IN (MOBILE USER ROW) */}
+        {/* MOBILE USER ROW ONLY */}
         {user && (
-          <div className="mobile-user-row">
+          <div className="mobile-user-row mobile-only">
             <span className="mobile-user-email">
               {user.email || user.username}
             </span>
@@ -131,7 +125,7 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* 👤 DESKTOP USER */}
+      {/* DESKTOP USER */}
       {user && (
         <div className="user-section" ref={menuRef}>
           <div
