@@ -48,6 +48,8 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     window.dispatchEvent(new Event("authChange"));
+    setOpen(false);
+    setMenuOpen(false);
     navigate("/login");
   };
 
@@ -63,6 +65,7 @@ const Navbar = () => {
     return "User";
   };
 
+  // Close desktop dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -77,80 +80,85 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Logo />
+      <div className="navbar-container">
+        <div className="logo-container">
+          <Logo />
+        </div>
 
-      {/* Hamburger */}
-      <div
-        className={`hamburger ${menuOpen ? "active" : ""}`}
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        ☰
-      </div>
+        {/* Hamburger */}
+        <div
+          className={`hamburger ${menuOpen ? "active" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? "✕" : "☰"}
+        </div>
 
-      {/* LINKS */}
-      <div className={`links ${menuOpen ? "active" : ""}`}>
-        <NavLink to="/" onClick={() => setMenuOpen(false)}>Home</NavLink>
-        <NavLink to="/projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
-        <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>
-        <NavLink to="/contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
+        {/* LINKS */}
+        <div className={`links ${menuOpen ? "active" : ""}`}>
+          <NavLink to="/" onClick={() => setMenuOpen(false)}>Home</NavLink>
+          <NavLink to="/projects" onClick={() => setMenuOpen(false)}>Projects</NavLink>
+          <NavLink to="/about" onClick={() => setMenuOpen(false)}>About</NavLink>
+          <NavLink to="/contact" onClick={() => setMenuOpen(false)}>Contact</NavLink>
 
-        {/* NOT LOGGED IN */}
-        {!user && (
-          <NavLink
-            className="login-btn"
-            to="/login"
-            onClick={() => setMenuOpen(false)}
-          >
-            Login / Signup
-          </NavLink>
-        )}
-
-        {/* MOBILE USER ROW ONLY */}
-        {user && (
-          <div className="mobile-user-row mobile-only">
-            <span className="mobile-user-email">
-              {user.email || user.username}
-            </span>
-
-            <button
-              className="logout-btn"
-              onClick={() => {
-                handleLogout();
-                setMenuOpen(false);
-              }}
+          {/* NOT LOGGED IN */}
+          {!user && (
+            <NavLink
+              className="btn login-btn"
+              to="/login"
+              onClick={() => setMenuOpen(false)}
             >
-              Logout
-            </button>
-          </div>
-        )}
-      </div>
+              Login / Signup
+            </NavLink>
+          )}
 
-      {/* DESKTOP USER */}
-      {user && (
-        <div className="user-section" ref={menuRef}>
-          <div
-            className="user-info"
-            onClick={() => setOpen(!open)}
-          >
-            <div className="avatar">{getInitial()}</div>
-            <span className="username">{getUsername()}</span>
-          </div>
-
-          {open && (
-            <div className="dropdown">
-              <p className="user-email">
+          {/* MOBILE USER ROW ONLY */}
+          {user && (
+            <div className="mobile-user-row mobile-only">
+              <span className="mobile-user-email">
                 {user.email || user.username}
-              </p>
-
-              {user.role === "admin" && (
-                <NavLink to="/admin/dashboard">
-                  Admin Panel
-                </NavLink>
-              )}
+              </span>
+              <button className="btn logout-btn" onClick={handleLogout}>
+                Logout
+              </button>
             </div>
           )}
         </div>
-      )}
+
+        {/* DESKTOP USER */}
+        {user && (
+          <div className="user-section" ref={menuRef}>
+            <div
+              className="user-info"
+              onClick={() => setOpen(!open)}
+            >
+              <span className="username">{getUsername()}</span>
+              <div className="avatar">{getInitial()}</div>
+            </div>
+
+            {open && (
+              <div className="dropdown">
+                <div className="dropdown-header">
+                  <p className="user-email">{user.email || user.username}</p>
+                </div>
+                
+                {user.role === "admin" && (
+                  <NavLink 
+                    to="/admin/dashboard" 
+                    className="dropdown-link"
+                    onClick={() => setOpen(false)}
+                  >
+                    Admin Panel
+                  </NavLink>
+                )}
+                
+                <button className="btn logout-btn dropdown-logout" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </nav>
   );
 };
